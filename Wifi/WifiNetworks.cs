@@ -38,7 +38,7 @@ namespace WifiMap
         //there are errors
         public void Search()
         {
-            int angle = minangle;
+            /*int angle = minangle;
             //to start angle
             List<Network> temp;
             do
@@ -47,7 +47,7 @@ namespace WifiMap
                 temp = GetEnabledNetworks(angle);
                 UpdateData(temp);
                 angle += 10;
-            }while (angle <= maxangle);
+            }while (angle <= maxangle);*/
         }
 
         private void UpdateData(List<Network> newData)

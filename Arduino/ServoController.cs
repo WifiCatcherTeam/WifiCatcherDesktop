@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 namespace WifiCatcherDesktop.Arduino
 {
-    public class ArduinoServoController : IDisposable
+    public class ServoController : IDisposable
     {
         public static int LowestAngle = 40;
         public static int HighestAngle = 170;
@@ -19,7 +19,7 @@ namespace WifiCatcherDesktop.Arduino
         private int _angle = LowestAngle;
         public int Angle { get { return _angle; } }
 
-        public ArduinoServoController(string portName)
+        public ServoController(string portName)
         {
             _portName = portName;
         }
@@ -62,7 +62,7 @@ namespace WifiCatcherDesktop.Arduino
             }
         }
 
-        ~ArduinoServoController()
+        ~ServoController()
         {
             Dispose();
         }
