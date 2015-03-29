@@ -14,3 +14,11 @@ C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Debug\Manage
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.exe
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.pdb
 D:\source\What The Hack\WifiCatcher\bin\Debug\WifiCatcherDesktop.exe.config
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.csprojResolveAssemblyReference.cache
+D:\source\What The Hack\WifiCatcher\obj\Debug\MainWindow.baml
+D:\source\What The Hack\WifiCatcher\obj\Debug\MainWindow.g.cs
+D:\source\What The Hack\WifiCatcher\obj\Debug\App.g.cs
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop_MarkupCompile.cache
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.g.resources
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.Properties.Resources.resources
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.csproj.GenerateResource.Cache
