@@ -44,7 +44,7 @@ namespace WifiCatcherDesktop.Wifi
             return bestAngle;
         }
 
-        public void Connect(Network network, ArduinoController controller)
+        public void Connect(Network network)
         {
             int bestAngle = FindBestAngle(network);
             _controller.MakeAngle(bestAngle);
