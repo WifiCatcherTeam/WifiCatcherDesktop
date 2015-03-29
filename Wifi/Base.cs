@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace WifiCatcherDesktop.Wifi
 {
-    class Base
+    public class Base
     {
+        public List<Network> Networks;
+
+        public void InsertOrUpdate(Network network)
+        {
+            
+        }
     }
 }
