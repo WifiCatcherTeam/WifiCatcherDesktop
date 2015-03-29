@@ -8,8 +8,8 @@ C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCa
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.g.resources
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.Properties.Resources.resources
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.csproj.GenerateResource.Cache
-C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.exe
-C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.pdb
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Debug\WifiCatcherDesktop.exe
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Debug\WifiCatcherDesktop.pdb
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Debug\ManagedWifi.dll
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.exe
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.pdb
