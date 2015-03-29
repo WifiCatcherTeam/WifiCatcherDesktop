@@ -93,7 +93,7 @@ namespace WifiCatcherDesktop.Arduino
             _catcherState = state;
 
             var stateVal = (byte) _catcherState;
-            byte[] bytes = { (byte)((1 << 7) | stateVal) };
+            byte[] bytes = { 1, stateVal };
             _port.Write(bytes, 0, bytes.Length);
         }
 

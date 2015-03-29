@@ -209,7 +209,7 @@ namespace WifiCatcherDesktop
                 Log(String.Format("{0} | {1}", network.Ssid, network.IsFree ? "Open" : "Pass"));
                 foreach (var pair in network.Values)
                 {
-                    Log(String.Format("{0:3} : {1}", pair.Key, pair.Value));
+                    Log(String.Format("{0} : {1}", pair.Key, pair.Value));
                 }
             }
         }

@@ -16,7 +16,11 @@ namespace WifiCatcherDesktop.Wifi
 
     public class Scanner
     {
+#if DEBUG
+        private const int StepsCount = 3;
+#else
         private const int StepsCount = 12;
+#endif
 
         private readonly ArduinoController _controller;
 

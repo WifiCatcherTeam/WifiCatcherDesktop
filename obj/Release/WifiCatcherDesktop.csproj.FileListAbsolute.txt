@@ -1,0 +1,13 @@
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Release\WifiCatcherDesktop.exe.config
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Release\WifiCatcherDesktop.exe
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Release\WifiCatcherDesktop.pdb
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Release\ManagedWifi.dll
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\MainWindow.baml
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\MainWindow.g.cs
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\App.g.cs
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop_MarkupCompile.cache
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.g.resources
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.Properties.Resources.resources
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.csproj.GenerateResource.Cache
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.exe
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.pdb
