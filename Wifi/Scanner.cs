@@ -71,7 +71,7 @@ namespace WifiCatcherDesktop.Wifi
 
                 var networks = GetEnabledNetworks(angle);
                 foreach (var network in networks)
-                    _wifiBase.InsertOrUpdate(network);
+                    _wifiBase.AddOrUpdateNetwork(network);
             }
 
             NotifyScanningStopped();
@@ -112,9 +112,11 @@ namespace WifiCatcherDesktop.Wifi
                 {
                     var ssid = GetStringForSsid(network.dot11Ssid);
                     var security = network.securityEnabled;
-                    var sLevel = (int)network.wlanSignalQuality;
-                    result.Add(new Network(ssid, security, angle, sLevel));
+                    //var sLevel = (int)network.wlanSignalQuality;
+                    result.Add(new Network(ssid, security));
                 }
+
+                
             }
             return result;
         }
