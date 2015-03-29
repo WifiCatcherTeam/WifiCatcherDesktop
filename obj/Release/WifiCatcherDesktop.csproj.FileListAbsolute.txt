@@ -11,3 +11,6 @@ C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\Wifi
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.csproj.GenerateResource.Cache
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.exe
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.pdb
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\WifiCatcherDesktop.csprojResolveAssemblyReference.cache
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\ScanWindow.baml
+C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Release\ScanWindow.g.cs

@@ -57,6 +57,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Arduino\CatcherState.cs" />
+    <Compile Include="ScanWindow.xaml.cs">
+      <DependentUpon>ScanWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wifi\Base.cs" />
     <Compile Include="Wifi\Connector.cs" />
     <Compile Include="Wifi\Entry.cs" />
@@ -75,6 +78,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ScanWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -103,6 +110,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\кнопка.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\крестик.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\линия.jpg" />
+    <Resource Include="Images\Название.png" />
+    <Resource Include="Images\сектор.png" />
+    <Resource Include="Images\спидометр фон.png" />
+    <Resource Include="Images\фон.jpg" />
+    <Resource Include="Images\шкала.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

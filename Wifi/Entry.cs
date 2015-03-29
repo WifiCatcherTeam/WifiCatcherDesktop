@@ -25,5 +25,49 @@ namespace WifiCatcherDesktop.Wifi
         {
             Levels[angle] = level;
         }
+
+        public int GetLevel()
+        {
+            int n = 0;
+            int sum = 0;
+            foreach (var level in Levels.Values)
+            {
+                n++;
+                sum += level;
+            }
+            return (int) Math.Round((double) sum/n);
+        }
+
+        public int GetBestAngle()
+        {
+            int level = -1;
+            int angle = 0;
+
+            foreach (var pair in Levels)
+            {
+                if (level < pair.Value)
+                {
+                    level = pair.Value;
+                    angle = pair.Key;
+                }
+            }
+            return angle;
+        }
+
+        public int GetBestLevel()
+        {
+            int level = -1;
+            int angle = 0;
+
+            foreach (var pair in Levels)
+            {
+                if (level < pair.Value)
+                {
+                    level = pair.Value;
+                    angle = pair.Key;
+                }
+            }
+            return level;
+        }
     }
 }

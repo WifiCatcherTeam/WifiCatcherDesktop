@@ -12,7 +12,7 @@ namespace WifiCatcherDesktop.Wifi
 {
     public delegate void ScanningStartedEvent();
     public delegate void ScanningStoppedEvent();
-    public delegate void ScanningMakeAngleEvent(int angle);
+    public delegate void ScanningMakeAngleEvent(int angle, List<Network> networks);
 
     public class Scanner
     {
@@ -72,13 +72,16 @@ namespace WifiCatcherDesktop.Wifi
                 }
 
                 _controller.MakeAngle(angle);
-                if (ScanningMakeAngle != null)
-                    ScanningMakeAngle(angle);
 
                 var networks = GetEnabledNetworksWithEntries(angle);
                 foreach (var network in networks)
                     _wifiBase.AddOrUpdateNetwork(network);
+
+                if (ScanningMakeAngle != null)
+                    ScanningMakeAngle(angle, networks);
             }
+
+            _controller.MakeAngle(ArduinoController.InitServoAngle);
 
             NotifyScanningStopped();
         }
@@ -101,7 +104,7 @@ namespace WifiCatcherDesktop.Wifi
             _controller.MakeState(CatcherState.None);
         }
 
-        private IEnumerable<Network> GetEnabledNetworksWithEntries(int angle)
+        private List<Network> GetEnabledNetworksWithEntries(int angle)
         {
             var adapterIface = GetAdapterWlanInterface();
             adapterIface.Scan();

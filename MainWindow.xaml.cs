@@ -217,7 +217,7 @@ namespace WifiCatcherDesktop
         }
 
 
-        private void ScanningMakeAngle(int angle)
+        private void ScanningMakeAngle(int angle, List<Network> networks)
         {
             Dispatcher.Invoke(() =>
             {
