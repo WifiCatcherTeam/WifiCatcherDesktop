@@ -23,17 +23,23 @@ namespace WifiCatcherDesktop.Wifi
 
         public void AddLevel(int angle, int level)
         {
-            Levels[angle] = level;
+            lock (Base.locker)
+            {
+                Levels[angle] = level;
+            }
         }
 
         public int GetLevel()
         {
             int n = 0;
             int sum = 0;
-            foreach (var level in Levels.Values)
+            lock (Base.locker)
             {
-                n++;
-                sum += level;
+                foreach (var level in Levels.Values)
+                {
+                    n++;
+                    sum += level;
+                }   
             }
             return (int) Math.Round((double) sum/n);
         }
@@ -43,12 +49,15 @@ namespace WifiCatcherDesktop.Wifi
             int level = -1;
             int angle = 0;
 
-            foreach (var pair in Levels)
+            lock (Base.locker)
             {
-                if (level < pair.Value)
+                foreach (var pair in Levels)
                 {
-                    level = pair.Value;
-                    angle = pair.Key;
+                    if (level < pair.Value)
+                    {
+                        level = pair.Value;
+                        angle = pair.Key;
+                    }
                 }
             }
             return angle;
@@ -59,12 +68,15 @@ namespace WifiCatcherDesktop.Wifi
             int level = -1;
             int angle = 0;
 
-            foreach (var pair in Levels)
+            lock (Base.locker)
             {
-                if (level < pair.Value)
+                foreach (var pair in Levels)
                 {
-                    level = pair.Value;
-                    angle = pair.Key;
+                    if (level < pair.Value)
+                    {
+                        level = pair.Value;
+                        angle = pair.Key;
+                    }
                 }
             }
             return level;

@@ -210,8 +210,11 @@ namespace WifiCatcherDesktop
                 foreach (var entry in network.Entries)
                 {
                     Log(String.Format("   {0} : ", entry.Mac));
-                    foreach (var pair in entry.Levels)
-                        Log(String.Format("   - {0} : {1}", pair.Key, pair.Value));
+                    lock (Base.locker)
+                    {
+                        foreach (var pair in entry.Levels)
+                            Log(String.Format("   - {0} : {1}", pair.Key, pair.Value));
+                    }
                 }
             }
         }

@@ -144,8 +144,12 @@ namespace WifiCatcherDesktop.Wifi
                 var macAddr = GetStringForMacAddr(wlanBssEntry.dot11Bssid); 
                 var level = (int)wlanBssEntry.linkQuality;
 
-                var entry = new Entry(macAddr);
-                entry.AddLevel(angle, level);
+                Entry entry = null;
+                lock (Base.locker)
+                {
+                    entry = new Entry(macAddr);
+                    entry.AddLevel(angle, level);
+                }
 
                 foreach (var network in networks.Where(network => network.Ssid == ssid))
                     network.AddEntry(entry);

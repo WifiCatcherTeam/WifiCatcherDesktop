@@ -13,6 +13,8 @@ namespace WifiCatcherDesktop.Wifi
             get { return _networks; }
         }
 
+        public static object locker = new object();
+
         public event NetworkUpdatedEvent NetworkUpdated;
 
         public Base()
@@ -46,9 +48,12 @@ namespace WifiCatcherDesktop.Wifi
 
         private void UpdateEntry(Entry item, Entry entry)
         {
-            foreach (var pair in entry.Levels)
+            lock (locker)
             {
-                item.Levels[pair.Key] = pair.Value;
+                foreach (var pair in entry.Levels)
+                {
+                    item.Levels[pair.Key] = pair.Value;
+                }
             }
         }
 
