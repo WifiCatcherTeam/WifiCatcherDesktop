@@ -3,6 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <ComboBox x:Name="PortView" Width="200" Margin="4"></ComboBox>
+            <Button x:Name="PortsUpdateButton" Width="100" Margin="4" Click="PortsUpdateButton_Click">Update</Button>
+            <Button x:Name="ConnectButton" Width="100" Margin="4" Click="ConnectButton_Click">Connect</Button>
+        </StackPanel>
+        <TextBox x:Name="LogView" Grid.Row="1"/>
+        <StackPanel x:Name="AnglePanel" Grid.Row="2" Orientation="Horizontal">
+            <Button x:Name="MinusAngleButton" Width="32" Height="32" Margin="4" Click="MinusAngleButton_Click">-</Button>
+            <Slider x:Name="AngleSlider" Width="200" VerticalAlignment="Center" AutoToolTipPrecision="4" TickFrequency="10" AllowDrop="True" ValueChanged="Slider_ValueChanged"
+    Thumb.DragStarted="Slider_DragStarted"
+    Thumb.DragCompleted="Slider_DragCompleted"/>
+            <Button x:Name="PlusAngleButton" Width="32" Height="32" Margin="4" Click="PlusAngleButton_Click">+</Button>
+            <TextBlock x:Name="AngleBlock" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center">Angle</TextBlock>
+        </StackPanel>
     </Grid>
 </Window>
