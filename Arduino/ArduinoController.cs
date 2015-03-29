@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Threading;
 using System.Windows.Documents;
 
 namespace WifiCatcherDesktop.Arduino
 {
-    public class Controller : IDisposable
+    public class ArduinoController : IDisposable
     {
         public static int LowestServoAngle = 40;
         public static int HighestServoAngle = 170;
         public static int InitServoAngle = 100;
+
+        private const int ServoDelay = 200;
 
         private readonly string _portName;
         public string PortName
@@ -33,7 +36,7 @@ namespace WifiCatcherDesktop.Arduino
 
         private SerialPort _port;
 
-        public Controller(string portName)
+        public ArduinoController(string portName)
         {
             _portName = portName;
         }
@@ -76,6 +79,9 @@ namespace WifiCatcherDesktop.Arduino
 
             byte[] bytes = {0, (byte)Angle};
             _port.Write(bytes, 0, bytes.Length);
+
+            Thread.Sleep(ServoDelay); // ждём чтобы серва успела повернуться
+
             return !corrected;
         }
 
@@ -101,7 +107,7 @@ namespace WifiCatcherDesktop.Arduino
             Disconnect();
         }
 
-        ~Controller()
+        ~ArduinoController()
         {
             Dispose();
         }

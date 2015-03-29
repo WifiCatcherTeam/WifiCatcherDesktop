@@ -21,14 +21,19 @@ namespace WifiCatcherDesktop.Wifi
 
         public Network(string ssid, bool isFree)
         {
-            this.Ssid = ssid;
-            this.IsFree = isFree;
+            Ssid = ssid;
+            IsFree = isFree;
             _values = new Dictionary<int, int>();
+        }
+
+        public Network(string ssid, bool isFree, int angle, int level) : this(ssid, isFree)
+        {
+            AddValue(angle, level);
         }
 
         public void AddValue(int angle, int level)
         {
-            _values.Add(angle, level);
+            _values[angle] = level;
         }
     }
 }

@@ -61,7 +61,6 @@
     <Compile Include="Wifi\Connector.cs" />
     <Compile Include="Wifi\Network.cs" />
     <Compile Include="Wifi\Scanner.cs" />
-    <Compile Include="Wifi\WifiNetworks.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,7 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Arduino\Controller.cs" />
+    <Compile Include="Arduino\ArduinoController.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

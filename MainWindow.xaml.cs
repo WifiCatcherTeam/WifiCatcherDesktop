@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WifiCatcherDesktop.Arduino;
+using WifiCatcherDesktop.Wifi;
 
 namespace WifiCatcherDesktop
 {
@@ -25,9 +26,12 @@ namespace WifiCatcherDesktop
     public partial class MainWindow : Window
     {
         private List<string> _portNames;
-        private Controller _servoController;
+        private ArduinoController _controller;
 
         private static int AngleStep = 10;
+
+        private Base _wifiBase;
+        private Scanner _wifiScanner;
 
         public MainWindow()
         {
@@ -36,13 +40,22 @@ namespace WifiCatcherDesktop
             MakeDisconnectedViews();
             UpdateAngleViews();
 
-            AngleSlider.Minimum = Controller.LowestServoAngle;
-            AngleSlider.Maximum = Controller.HighestServoAngle;
+            AngleSlider.Minimum = ArduinoController.LowestServoAngle;
+            AngleSlider.Maximum = ArduinoController.HighestServoAngle;
+
+            _wifiBase = new Base();
+            _wifiBase.NetworkUpdated += network => Dispatcher.Invoke(() => LogNetwork(network));
         }
 
         private void Log(string message)
         {
             LogView.Text += message + '\n';
+            LogView.ScrollToEnd();
+        }
+
+        private void LogNetwork(Network network)
+        {
+            Log(String.Format("{0}", network.Ssid));
         }
 
         private void LoadPortsList()
@@ -71,11 +84,16 @@ namespace WifiCatcherDesktop
 
         private void ConnectArduino(string portName)
         {
-            if (_servoController != null)
-                _servoController.Dispose();
+            if (_controller != null)
+                _controller.Dispose();
 
-            _servoController = new Controller(portName);
-            _servoController.Connect();
+            _controller = new ArduinoController(portName);
+            _controller.Connect();
+
+            _wifiScanner = new Scanner(_controller, _wifiBase);
+            _wifiScanner.ScanningStarted += ScanningStarted;
+            _wifiScanner.ScanningStopped += ScanningStopped;
+            _wifiScanner.ScanningMakeAngle += ScanningMakeAngle;
         }
 
         private void MakeConnectedViews()
@@ -90,40 +108,40 @@ namespace WifiCatcherDesktop
 
         private void MinusAngleButton_Click(object sender, RoutedEventArgs e)
         {
-            _servoController.MakeAngle(_servoController.Angle - AngleStep);
+            _controller.MakeAngle(_controller.Angle - AngleStep);
             UpdateAngleViews();
         }
 
         private void PlusAngleButton_Click(object sender, RoutedEventArgs e)
         {
-            _servoController.MakeAngle(_servoController.Angle + AngleStep);
+            _controller.MakeAngle(_controller.Angle + AngleStep);
             UpdateAngleViews();
         }
 
         private void AngleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_servoController != null)
+            if (_controller != null)
             {
-                _servoController.MakeAngle((int)Math.Round(AngleSlider.Value));
+                _controller.MakeAngle((int)Math.Round(AngleSlider.Value));
                 UpdateAngleViews();
             }
         }
 
         private void SliderChangeValue(double value)
         {
-            if (_servoController != null)
+            if (_controller != null)
             {
-                _servoController.MakeAngle((int)Math.Round(value));
+                _controller.MakeAngle((int)Math.Round(value));
                 UpdateAngleViews();
             }
         }
 
         private void UpdateAngleViews()
         {
-            if (_servoController != null)
+            if (_controller != null)
             {
-                AngleSlider.Value = _servoController.Angle;
-                AngleBlock.Text = _servoController.Angle.ToString();
+                AngleSlider.Value = _controller.Angle;
+                AngleBlock.Text = _controller.Angle.ToString();
             }
             else
             {
@@ -151,6 +169,63 @@ namespace WifiCatcherDesktop
             if (!dragStarted)
                 SliderChangeValue(e.NewValue);
 
+        }
+
+        private void ScanSwitchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_wifiScanner.IsScanning)
+            {
+                _wifiScanner.StopScanning();
+            }
+            else
+            {
+                _wifiScanner.StartScanning();
+            }
+        }
+
+        private void ScanningStarted()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Log("Scanning...");
+                ScanSwitchButton.Content = "Stop scan";
+            });
+        }
+
+        private void ScanningStopped()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Log("Stop scanning");
+                ScanSwitchButton.Content = "Scan";
+                LogWifi(_wifiBase.Networks);
+            });
+        }
+
+        private void LogWifi(List<Network> networks)
+        {
+            foreach (var network in networks)
+            {
+                Log(String.Format("{0} | {1}", network.Ssid, network.IsFree ? "Open" : "Pass"));
+                foreach (var pair in network.Values)
+                {
+                    Log(String.Format("{0:3} : {1}", pair.Key, pair.Value));
+                }
+            }
+        }
+
+
+        private void ScanningMakeAngle(int angle)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Log(String.Format("--- Make angle = {0} ---", angle));
+            });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            LogView.Clear();
         }
     }
 }
