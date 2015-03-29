@@ -59,6 +59,7 @@
     <Compile Include="Arduino\CatcherState.cs" />
     <Compile Include="Wifi\Base.cs" />
     <Compile Include="Wifi\Connector.cs" />
+    <Compile Include="Wifi\Entry.cs" />
     <Compile Include="Wifi\Network.cs" />
     <Compile Include="Wifi\Scanner.cs" />
     <Page Include="MainWindow.xaml">
