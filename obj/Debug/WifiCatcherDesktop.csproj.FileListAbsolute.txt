@@ -13,3 +13,4 @@ C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Debug\WifiCa
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\bin\Debug\ManagedWifi.dll
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.exe
 C:\Users\DELL\Work\Programming\Visual Studio\WifiCatcherDesktop\obj\Debug\WifiCatcherDesktop.pdb
+D:\source\What The Hack\WifiCatcher\bin\Debug\WifiCatcherDesktop.exe.config
