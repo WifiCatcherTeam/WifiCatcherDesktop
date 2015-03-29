@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WifiCatcherDesktop.Wifi
 {
@@ -12,13 +8,12 @@ namespace WifiCatcherDesktop.Wifi
     public class Base
     {
         private readonly List<Network> _networks;
-
-        public event NetworkUpdatedEvent NetworkUpdated;
-
-        public List<Network> Networks
+        public IEnumerable<Network> Networks
         {
             get { return _networks; }
         }
+
+        public event NetworkUpdatedEvent NetworkUpdated;
 
         public Base()
         {
@@ -27,40 +22,39 @@ namespace WifiCatcherDesktop.Wifi
 
         public void AddOrUpdateNetwork(Network network)
         {
-            Network itemForUpdate = null;
-            foreach (var item in _networks)
+            foreach (var item in _networks.Where(item => item.Ssid == network.Ssid))
             {
-                if (item.Ssid == network.Ssid)
-                {
-                    itemForUpdate = item;
-                }
+                UpdateNetwork(item, network);
+                return;
             }
-            if (itemForUpdate == null)
-            {
-                _networks.Add(network);
-                if (NetworkUpdated != null)
-                    NetworkUpdated(network);
-            }
+            _networks.Add(network);
         }
 
-        public void AddOrUpdateEntry(Entry hotspot)
+        private void UpdateNetwork(Network item, Network network)
         {
-            Network itemForUpdate = null;
-            foreach (var network in _networks)
+            foreach (var entry in network.Entries)
             {
-                if (hotspot.Ssid == network.Ssid)
+                var sameEntry = item.Entries.FirstOrDefault(e => e.Mac == entry.Mac);
+                if (sameEntry != null)
                 {
-                    itemForUpdate = network;
+                    UpdateEntry(sameEntry, entry);
+                    continue;
                 }
+                item.AddEntry(entry);
             }
-            if (itemForUpdate == null)
-            {
-                throw new Exception("No such network. Please check the correct sequence of data updates.");
-            }
-            itemForUpdate.AddEntry(hotspot);
-            if (NetworkUpdated != null)
-                NetworkUpdated(itemForUpdate);
         }
 
+        private void UpdateEntry(Entry item, Entry entry)
+        {
+            foreach (var pair in entry.Levels)
+            {
+                item.Levels[pair.Key] = pair.Value;
+            }
+        }
+
+        public void Clear()
+        {
+            _networks.Clear();
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace WifiCatcherDesktop.Wifi
 #else
         private const int StepsCount = 12;
 #endif
+        private static readonly Guid AdapterGuid = new Guid("{7ae830fe-f14c-486d-836a-d6fb96da9854}");
 
         private readonly ArduinoController _controller;
 
@@ -58,6 +59,7 @@ namespace WifiCatcherDesktop.Wifi
 
         private void DoScanning()
         {
+            _wifiBase.Clear();
             NotifyScanningStarted();
 
             var angleStep = (ArduinoController.HighestServoAngle - ArduinoController.LowestServoAngle + 1) / StepsCount;
@@ -73,7 +75,7 @@ namespace WifiCatcherDesktop.Wifi
                 if (ScanningMakeAngle != null)
                     ScanningMakeAngle(angle);
 
-                var networks = GetEnabledNetworks(angle);
+                var networks = GetEnabledNetworksWithEntries(angle);
                 foreach (var network in networks)
                     _wifiBase.AddOrUpdateNetwork(network);
             }
@@ -87,7 +89,7 @@ namespace WifiCatcherDesktop.Wifi
                 ScanningStarted();
             IsScanning = true;
 
-            //_controller.MakeState(CatcherState.Scanning);
+            _controller.MakeState(CatcherState.Scanning);
         }
 
         private void NotifyScanningStopped()
@@ -99,60 +101,69 @@ namespace WifiCatcherDesktop.Wifi
             _controller.MakeState(CatcherState.None);
         }
 
-        private List<Network> GetEnabledNetworks(int angle)
+        private IEnumerable<Network> GetEnabledNetworksWithEntries(int angle)
         {
-            var result = new List<Network>();
-            var hotspots = new List<Entry>();
+            var adapterIface = GetAdapterWlanInterface();
+            adapterIface.Scan();
+
+            var networks = GetEnabledNetworks(adapterIface);
+            GetEnabledEntriesAndAddToNetworks(networks, adapterIface, angle);
+            return networks;
+        }
+
+        private WlanClient.WlanInterface GetAdapterWlanInterface()
+        {
             var client = new WlanClient();
-           
-            foreach (var wlanIface in client.Interfaces)
+            return client.Interfaces.FirstOrDefault(wlanIface => wlanIface.InterfaceGuid == AdapterGuid);
+        }
+
+        private List<Network> GetEnabledNetworks(WlanClient.WlanInterface wlanInterface)
+        {
+            var networks = new List<Network>();
+            var apiNetworks = wlanInterface.GetAvailableNetworkList(0);
+            foreach (var apiNetwork in apiNetworks)
             {
-                if (wlanIface.InterfaceGuid != new Guid("{7ae830fe-f14c-486d-836a-d6fb96da9854}"))
-                    continue;
-
-                wlanIface.Scan();
-
-                Wlan.WlanBssEntry[] wlanBssEntries = wlanIface.GetNetworkBssList();
-                foreach (Wlan.WlanBssEntry wlanBssEntry in wlanBssEntries)
-                {
-                    string ssid = GetStringForSsid(wlanBssEntry.dot11Ssid);
-                    byte[] macAddr = wlanBssEntry.dot11Bssid;
-                    var macAddrLen = (uint)macAddr.Length;
-                    var str = new string[(int)macAddrLen];
-                    for (int i = 0; i < macAddrLen; i++)
-                    {
-                        str[i] = macAddr[i].ToString("x2");
-                    }
-                    string mac = string.Join("", str);
-                    int quality = (int) wlanBssEntry.linkQuality;
-                    Entry temp = new Entry(ssid, mac);
-                    temp.AddQualityValues(angle, quality);
-                    hotspots.Add(temp);
-                }
-
-                var networks = wlanIface.GetAvailableNetworkList(0);
-                foreach (var network in networks)
-                {
-                    var ssid = GetStringForSsid(network.dot11Ssid);
-                    var security = network.securityEnabled;
-                    //var sLevel = (int)network.wlanSignalQuality;
-                    var temp = new Network(ssid, security);
-                    foreach (var entry in hotspots)
-                    {
-                        if (temp.Ssid == entry.Ssid)
-                        {
-                            temp.AddEntry(entry);
-                        }
-                    }
-                    result.Add(temp);
-                }
+                var ssid = GetStringForSsid(apiNetwork.dot11Ssid);
+                var isFree = !apiNetwork.securityEnabled;
+                
+                var network = new Network(ssid, isFree);
+                networks.Add(network);
             }
-            return result;
+            return networks;
+        }
+
+        private void GetEnabledEntriesAndAddToNetworks(List<Network> networks, WlanClient.WlanInterface wlanInterface, int angle)
+        {
+            var wlanBssEntries = wlanInterface.GetNetworkBssList();
+            foreach (var wlanBssEntry in wlanBssEntries)
+            {
+                var ssid = GetStringForSsid(wlanBssEntry.dot11Ssid);
+                var macAddr = GetStringForMacAddr(wlanBssEntry.dot11Bssid); 
+                var level = (int)wlanBssEntry.linkQuality;
+
+                var entry = new Entry(macAddr);
+                entry.AddLevel(angle, level);
+
+                foreach (var network in networks.Where(network => network.Ssid == ssid))
+                    network.AddEntry(entry);
+            }
         }
 
         private static string GetStringForSsid(Wlan.Dot11Ssid ssid)
         {
             return Encoding.ASCII.GetString(ssid.SSID, 0, (int)ssid.SSIDLength);
+        }
+
+        private static string GetStringForMacAddr(byte[] bytes)
+        {
+            var macAddrLen = (uint)bytes.Length;
+            var str = new string[(int)macAddrLen];
+            for (var i = 0; i < macAddrLen; i++)
+            {
+                str[i] = bytes[i].ToString("x2");
+            }
+            var mac = string.Join("", str);
+            return mac;
         }
     }
 }
