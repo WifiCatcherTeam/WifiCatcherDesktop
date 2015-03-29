@@ -22,3 +22,8 @@ D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop_MarkupCompile.c
 D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.g.resources
 D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.Properties.Resources.resources
 D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.csproj.GenerateResource.Cache
+D:\source\What The Hack\WifiCatcher\bin\Debug\WifiCatcherDesktop.exe
+D:\source\What The Hack\WifiCatcher\bin\Debug\WifiCatcherDesktop.pdb
+D:\source\What The Hack\WifiCatcher\bin\Debug\ManagedWifi.dll
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.exe
+D:\source\What The Hack\WifiCatcher\obj\Debug\WifiCatcherDesktop.pdb

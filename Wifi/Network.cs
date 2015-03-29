@@ -1,20 +1,22 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.TextFormatting;
 
 namespace WifiCatcherDesktop.Wifi
 {
     public class Network
     {
-        private Dictionary<int, int> _values;
+        private Dictionary<string, Entry> _values;
 
         public string Ssid { get; private set; }
         public bool IsFree { get; private set; }
 
-        public Dictionary<int, int> Values
+        public Dictionary<string, Entry> Values
         {
             get { return _values; }
         }
@@ -23,17 +25,37 @@ namespace WifiCatcherDesktop.Wifi
         {
             Ssid = ssid;
             IsFree = isFree;
-            _values = new Dictionary<int, int>();
+            _values = new Dictionary<string, Entry>();
         }
 
-        public Network(string ssid, bool isFree, int angle, int level) : this(ssid, isFree)
+        //??
+        public Network(string ssid, bool isFree, Entry hotspot) : this(ssid, isFree)
         {
-            AddValue(angle, level);
+            _values.Add(hotspot.Mac, hotspot);
         }
 
-        public void AddValue(int angle, int level)
+        public void AddEntry(string mac, int angle, int level)
         {
-            _values[angle] = level;
+            if (_values.ContainsKey(mac))
+            {
+                Entry temp;
+                _values.TryGetValue(mac,out temp);
+                temp.AddQualityValues(angle, level);
+            }
+            else
+            {
+                Entry temp = new Entry(Ssid, mac);
+                temp.AddQualityValues(angle, level);
+                _values.Add(mac, temp);
+            }
+        }
+
+        public void AddEntry(Entry hotspot)
+        {
+            foreach (var item in hotspot.Quality)
+            {
+                this.AddEntry(hotspot.Mac, item.Key, item.Value);
+            }
         }
     }
 }

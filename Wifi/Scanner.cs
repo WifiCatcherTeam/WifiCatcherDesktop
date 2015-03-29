@@ -75,7 +75,7 @@ namespace WifiCatcherDesktop.Wifi
 
                 var networks = GetEnabledNetworks(angle);
                 foreach (var network in networks)
-                    _wifiBase.InsertOrUpdate(network);
+                    _wifiBase.AddOrUpdateNetwork(network);
             }
 
             NotifyScanningStopped();
@@ -102,6 +102,7 @@ namespace WifiCatcherDesktop.Wifi
         private List<Network> GetEnabledNetworks(int angle)
         {
             var result = new List<Network>();
+            var hotspots = new List<Entry>();
             var client = new WlanClient();
            
             foreach (var wlanIface in client.Interfaces)
@@ -111,13 +112,39 @@ namespace WifiCatcherDesktop.Wifi
 
                 wlanIface.Scan();
 
+                Wlan.WlanBssEntry[] wlanBssEntries = wlanIface.GetNetworkBssList();
+                foreach (Wlan.WlanBssEntry wlanBssEntry in wlanBssEntries)
+                {
+                    string ssid = GetStringForSsid(wlanBssEntry.dot11Ssid);
+                    byte[] macAddr = wlanBssEntry.dot11Bssid;
+                    var macAddrLen = (uint)macAddr.Length;
+                    var str = new string[(int)macAddrLen];
+                    for (int i = 0; i < macAddrLen; i++)
+                    {
+                        str[i] = macAddr[i].ToString("x2");
+                    }
+                    string mac = string.Join("", str);
+                    int quality = (int) wlanBssEntry.linkQuality;
+                    Entry temp = new Entry(ssid, mac);
+                    temp.AddQualityValues(angle, quality);
+                    hotspots.Add(temp);
+                }
+
                 var networks = wlanIface.GetAvailableNetworkList(0);
                 foreach (var network in networks)
                 {
                     var ssid = GetStringForSsid(network.dot11Ssid);
                     var security = network.securityEnabled;
-                    var sLevel = (int)network.wlanSignalQuality;
-                    result.Add(new Network(ssid, security, angle, sLevel));
+                    //var sLevel = (int)network.wlanSignalQuality;
+                    var temp = new Network(ssid, security);
+                    foreach (var entry in hotspots)
+                    {
+                        if (temp.Ssid == entry.Ssid)
+                        {
+                            temp.AddEntry(entry);
+                        }
+                    }
+                    result.Add(temp);
                 }
             }
             return result;

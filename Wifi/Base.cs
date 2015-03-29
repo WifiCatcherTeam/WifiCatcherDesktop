@@ -25,7 +25,7 @@ namespace WifiCatcherDesktop.Wifi
             _networks = new List<Network>();
         }
 
-        public void InsertOrUpdate(Network network)
+        public void AddOrUpdateNetwork(Network network)
         {
             Network itemForUpdate = null;
             foreach (var item in _networks)
@@ -41,15 +41,25 @@ namespace WifiCatcherDesktop.Wifi
                 if (NetworkUpdated != null)
                     NetworkUpdated(network);
             }
-            else
+        }
+
+        public void AddOrUpdateEntry(Entry hotspot)
+        {
+            Network itemForUpdate = null;
+            foreach (var network in _networks)
             {
-                foreach (var value in network.Values)
+                if (hotspot.Ssid == network.Ssid)
                 {
-                    itemForUpdate.AddValue(value.Key, value.Value);
+                    itemForUpdate = network;
                 }
-                if (NetworkUpdated != null)
-                    NetworkUpdated(itemForUpdate);
             }
+            if (itemForUpdate == null)
+            {
+                throw new Exception("No such network. Please check the correct sequence of data updates.");
+            }
+            itemForUpdate.AddEntry(hotspot);
+            if (NetworkUpdated != null)
+                NetworkUpdated(itemForUpdate);
         }
 
     }
