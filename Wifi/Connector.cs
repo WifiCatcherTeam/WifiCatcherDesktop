@@ -44,7 +44,7 @@ namespace WifiCatcherDesktop.Wifi
             return bestAngle;
         }
 
-        public void Connect(Network network)
+        public void Connect(Network network, string password)
         {
             int bestAngle = FindBestAngle(network);
             _controller.MakeAngle(bestAngle);
@@ -54,6 +54,14 @@ namespace WifiCatcherDesktop.Wifi
             {
                 string profileName = network.Ssid;
                 string profileXml = string.Format("<?xml version=\"1.0\" encoding=\"US-ASCII\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><autoSwitch>false</autoSwitch><MSM><security><authEncryption><authentication>open</authentication><encryption>none</encryption><useOneX>false</useOneX></authEncryption></security></MSM></WLANProfile>", profileName);
+                wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
+                wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);
+            }
+            else
+            {
+                string key = password;
+                string profileName = network.Ssid;
+                string profileXml = string.Format("<?xml version=\"1.0\" encoding=\"US-ASCII\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><autoSwitch>false</autoSwitch><MSM><security><authEncryption><authentication>WPA2PSK</authentication><encryption>AES</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>passPhrase</keyType><protected>false</protected><keyMaterial>{1}</keyMaterial></sharedKey></security></MSM></WLANProfile>", profileName, key);
                 wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
                 wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);
             }
