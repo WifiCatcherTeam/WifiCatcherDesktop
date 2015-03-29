@@ -56,9 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Wifi\Commands\Orientate.cs" />
-    <Compile Include="Wifi\Commands\Refresh.cs" />
-    <Compile Include="Wifi\ViewModel.cs" />
+    <Compile Include="Wifi\Base.cs" />
+    <Compile Include="Wifi\Connector.cs" />
+    <Compile Include="Wifi\Network.cs" />
+    <Compile Include="Wifi\Scanner.cs" />
     <Compile Include="Wifi\WifiNetworks.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -75,7 +76,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Wifi\Notifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
