@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NativeWifi;
+using WifiCatcherDesktop.Arduino;
 
 namespace WifiCatcherDesktop.Wifi
 {
     public class Connector
     {
+        private ArduinoController _controller;
         private static readonly Guid AdapterGuid = new Guid("{7ae830fe-f14c-486d-836a-d6fb96da9854}");
 
         private WlanClient.WlanInterface GetAdapterWlanInterface()
@@ -19,8 +21,34 @@ namespace WifiCatcherDesktop.Wifi
             return client.Interfaces.FirstOrDefault(wlanIface => wlanIface.InterfaceGuid == AdapterGuid);
         }
 
-        public void Connect(Network network)
+        public Connector(ArduinoController controller)
         {
+            _controller = controller;
+        }
+
+        private int FindBestAngle(Network network)
+        {
+            int bestAngle = 0;
+            int bestQuality = -10000;
+            foreach (var entry in network.Entries)
+            {
+                foreach (var item in entry.Levels)
+                {
+                    if (item.Value > bestQuality)
+                    {
+                        bestAngle = item.Key;
+                        bestQuality = item.Value;
+                    }
+                }
+            }
+            return bestAngle;
+        }
+
+        public void Connect(Network network, ArduinoController controller)
+        {
+            int bestAngle = FindBestAngle(network);
+            _controller.MakeAngle(bestAngle);
+
             WlanClient.WlanInterface wlanIface = GetAdapterWlanInterface();
             if (network.IsFree)
             {
